@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Binnen Display</title>
+<link rel="preload" href="fonts/source-sans-3-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-phase="night">
+<div id="sky"></div><div class="bg" id="bg0"></div><div class="bg" id="bg1"></div><div id="scrim"></div>
+<div class="ui">
+  <div class="top">
+    <div><div class="place">Leiden</div><div class="hijri" id="hijri"></div><div class="credit" id="credit"></div></div>
+    <div class="wx" id="wx"></div>
+  </div>
+  <div class="mid">
+    <div><div class="clock" id="clock">--:--</div><div class="date" id="date"></div></div>
+    <div class="next" id="next"><div class="nl">Volgende gebed</div><div class="nn" id="nn"></div><div class="nc" id="nc"></div></div>
+  </div>
+  <div class="bar" id="bar"></div>
+</div>
+<div id="adhan"><div class="a1">Adhaan</div><div class="a2" id="aname"></div><div class="a3" id="atime"></div><div class="a4">Tik om te stoppen</div></div>
+<script src="vendor/adhan.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

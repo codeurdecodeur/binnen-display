@@ -1,0 +1,77 @@
+/* Binnen Display (standalone). Tokens identiek aan docs/STYLE.md; alleen het lettertype is Source Sans 3 (SIL OFL). */
+@font-face{font-family:"Source Sans 3";src:url(fonts/source-sans-3-latin-300-normal.woff2) format("woff2");font-weight:300;font-style:normal;font-display:block}
+@font-face{font-family:"Source Sans 3";src:url(fonts/source-sans-3-latin-400-normal.woff2) format("woff2");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"Source Sans 3";src:url(fonts/source-sans-3-latin-600-normal.woff2) format("woff2");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"Source Sans 3";src:url(fonts/source-sans-3-latin-700-normal.woff2) format("woff2");font-weight:700;font-style:normal;font-display:block}
+/* ===== Ontwerp-tokens: alle kleuren, letters, maten op een plek ===== */
+:root{
+  --font:"Source Sans 3",system-ui,-apple-system,Roboto,sans-serif;
+  /* Kleur: navy + wit als basis, accent dynamisch (terugval neon-oranje). */
+  --accent:#ff9a4d; --accent-ink:#0b1530; --accent-glow:0 0 2.4vh color-mix(in srgb,var(--accent) 45%,transparent);
+  --navy-900:#070d1f; --navy-800:#0b1530; --navy-700:#0e1a38; --navy-600:#16244a;
+  --white:#ffffff; --text:#ffffff; --text-2:rgba(255,255,255,.72); --text-3:rgba(255,255,255,.46);
+  --surface:rgba(14,26,56,.55); --surface-strong:rgba(14,26,56,.86); --line:rgba(255,255,255,.22);
+  --shadow:0 .6vh 2.4vh rgba(0,0,0,.35); --text-shadow:0 .4vh 2.4vh rgba(0,0,0,.45);
+  /* Typeschaal (vh = meeschalend met het scherm; Nest Hub = 600 px hoog). */
+  --fs-display:26vh; --fs-hero:17vh; --fs-xl:9vh; --fs-l:4.8vh; --fs-m:4.4vh; --fs-s:3.6vh; --fs-xs:2.8vh; --fs-xxs:2vh;
+  /* Gewichten voor Source Sans 3 (Light 300 / Regular 400 / Semibold 600 / Bold 700). */
+  --fw-thin:300; --fw-light:400; --fw-regular:600; --fw-semibold:700;
+  --track-wide:.06em; --track-caps:.28em;
+  --pad-y:5.5vh; --pad-x:5vw; --gap:1.2vw; --radius:2.4vh; --radius-pill:999px;
+  --fade-slow:3s; --fade:.6s;
+}
+*{box-sizing:border-box;margin:0}
+.p.on,.next .nn,#adhan .a1{transition:background-color 3s,color 3s,box-shadow 3s}
+html,body{width:100%;height:100%;overflow:hidden;color:var(--text);font-family:var(--font);font-weight:var(--fw-light);background:var(--navy-900);-webkit-font-smoothing:antialiased}
+
+/* --- Achtergrond: navy verloop als basis, foto's (licht/donker) eroverheen --- */
+#sky{position:fixed;inset:0;background:radial-gradient(120% 90% at 80% 0%,var(--navy-600) 0%,var(--navy-800) 55%,var(--navy-900) 100%)}
+.bg{position:fixed;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity var(--fade-slow) ease}
+.bg.show{opacity:1}
+#scrim{position:fixed;inset:0;opacity:0;transition:opacity var(--fade-slow);
+  background:linear-gradient(180deg,rgba(7,13,31,.62) 0%,rgba(7,13,31,.18) 26%,rgba(7,13,31,.22) 40%,rgba(7,13,31,.78) 62%,rgba(7,13,31,.9) 100%)}
+body.photo #scrim{opacity:1}
+body.photo .ui{text-shadow:var(--text-shadow)}
+body[data-phase=night] .ui{opacity:.85}
+
+/* --- Indeling --- */
+.ui{position:fixed;inset:0;padding:var(--pad-y) var(--pad-x);display:grid;grid-template-rows:auto 1fr auto;transition:opacity 4s}
+.top{display:flex;justify-content:space-between;align-items:flex-start}
+.mid{display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:4vh}
+
+/* --- Tekst --- */
+.place{font-size:var(--fs-m);color:var(--text-2);font-weight:var(--fw-regular);letter-spacing:var(--track-wide)}
+.hijri{font-size:var(--fs-s);color:var(--text-3);margin-top:.6vh}
+.credit{font-size:var(--fs-xxs);color:var(--text-3);margin-top:.8vh;max-width:46vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clock{font-size:var(--fs-display);font-weight:var(--fw-thin);letter-spacing:-.03em;line-height:.9;font-variant-numeric:tabular-nums}
+.date{font-size:var(--fs-m);color:var(--text-2);margin-top:1.8vh}
+.next{text-align:right}
+.next .nl{font-size:var(--fs-xs);color:var(--text-2);letter-spacing:var(--track-caps);text-transform:uppercase;font-weight:var(--fw-regular)}
+.next .nn{font-size:var(--fs-xl);font-weight:var(--fw-regular);line-height:1;margin-top:1vh;color:var(--accent)}
+.next .nc{font-size:var(--fs-m);color:var(--text-2);margin-top:1.2vh;font-variant-numeric:tabular-nums}
+
+/* --- Weer --- */
+.wx{display:flex;align-items:center;gap:1.6vw;text-align:right}
+.wx svg{width:10vh;height:10vh}
+.temp{font-size:var(--fs-xl);font-weight:var(--fw-light);line-height:1}
+.wxsub{font-size:var(--fs-s);color:var(--text-2);margin-top:.6vh}
+
+/* --- Gebedstijden-balk --- */
+.bar{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gap)}
+.p{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:1.8vh 0 1.6vh;text-align:center;
+  backdrop-filter:blur(8px);transition:background var(--fade),color var(--fade);text-shadow:none}
+.p .n{font-size:var(--fs-xs);color:var(--text-2);font-weight:var(--fw-regular);letter-spacing:var(--track-wide)}
+.p .t{font-size:var(--fs-l);margin-top:.4vh;font-variant-numeric:tabular-nums}
+.p.past{opacity:.45}
+.p.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);box-shadow:var(--accent-glow)}
+.p.on .n{color:var(--accent-ink);opacity:.8}
+.p.on .t{font-weight:var(--fw-semibold)}
+
+/* --- Adhaan (schermvullend, tik = stoppen) --- */
+#adhan{position:fixed;inset:0;z-index:9;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(120% 100% at 50% 0%,var(--navy-600),var(--navy-900));color:var(--text)}
+#adhan.on{display:flex}
+#adhan .a1{font-size:var(--fs-s);color:var(--accent);letter-spacing:var(--track-caps);text-transform:uppercase;font-weight:var(--fw-regular)}
+#adhan .a2{font-size:var(--fs-hero);font-weight:var(--fw-thin);line-height:1;margin-top:2vh}
+#adhan .a3{font-size:var(--fs-m);color:var(--text-2);margin-top:2vh}
+#adhan .a4{position:absolute;bottom:6vh;font-size:var(--fs-xs);color:var(--text-3)}
