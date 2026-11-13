@@ -7,7 +7,7 @@ Geen aanbel/camera in deze versie.
 ## Hoe het werkt
 - **Gebedstijden:** `vendor/adhan.umd.min.js` (npm `adhan` 4.4.6, MIT), Muslim World League, Leiden (52.1601, 4.4970), `HighLatitudeRule.recommended`, kalenderdag in Europe/Amsterdam. Zelfde berekening als `src/dashboard.js`; na middernacht opnieuw berekend.
 - **Weer:** rechtstreeks van Open-Meteo, elke 15 min; bij een fout blijft de laatste waarde staan.
-- **Achtergronden:** `backgrounds/licht|donker`, lijst staat in `app.js` (`BGS`). Licht van Fajr tot Maghrib, donker van Maghrib tot Fajr, wisseling elk uur en direct bij de overgang. Het accent wordt per foto afgeleid.
+- **Achtergronden:** `backgrounds/licht|donker`, lijst staat in `app.js` (`BGS`). Eén vaste foto per gebedstijd (`prayer` in `BGS`): Fajr skyline, Dhuhr gracht, Asr Hooglandse Kerk, Maghrib zonsondergang, Isha nacht; wisselt binnen 30 s na elk gebed. Het accent wordt per foto afgeleid.
 - **Adhaan:** de pagina plant zelf Fajr, Dhuhr, Asr, Maghrib en Isha (binnen 2 min na de tijd), toont een schermvullende overlay en speelt `adhan.mp3`. Tik = stoppen; stopt vanzelf na het einde (veiligheidstimer 170 s). Volume kan niet vanuit de pagina; stel dat op de hub zelf in. Als de browser audio weigert (autoplay), blijft de overlay zonder geluid staan en staat er een waarschuwing in de console. Op de Nest Hub via DashCast mag audio wel zonder klik.
 - **Nachtelijke herlaad:** om ~03:30 (Amsterdam) herlaadt de pagina zichzelf, zodat nieuwe versies binnenkomen (niet tijdens een adhaan).
 - **Lettertype:** Source Sans 3 (SIL OFL 1.1), lokaal in `fonts/` met `fonts/OFL.txt`. Gewichten: 300 klok, 400 tekst, 600 labels, 700 nadruk.

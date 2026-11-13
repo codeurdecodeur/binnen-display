@@ -16,12 +16,13 @@ var TEST = params.get('test');
 var startedAt = Date.now();
 
 // Achtergrondfoto's (zelfde lijst als assets/backgrounds/manifest.json). Auteur/licentie nog leeg: zie README.
+// Eén vaste foto per gebedstijd: wisselt bij elk gebed (licht overdag, donker vanaf Maghrib).
 var BGS = [
-  { url: 'backgrounds/licht/01-leiden-hooglandse-kerk.jpg', mode: 'licht', title: 'Hooglandse Kerk, Leiden', author: '', license: '' },
-  { url: 'backgrounds/licht/05-amsterdam-gracht.jpg', mode: 'licht', title: 'Gracht, Amsterdam', author: '', license: '' },
-  { url: 'backgrounds/licht/04-amsterdam-skyline.jpg', mode: 'licht', title: 'Skyline, Amsterdam', author: '', license: '' },
-  { url: 'backgrounds/licht/03-amsterdam-grachtenpanden-zonsondergang.jpg', mode: 'donker', title: 'Grachtenpanden, Amsterdam', author: '', license: '' },
-  { url: 'backgrounds/donker/02-leiden-gracht-nacht.jpg', mode: 'donker', title: 'Gracht, Leiden', author: '', license: '' }
+  { prayer: 'fajr',    url: 'backgrounds/licht/04-amsterdam-skyline.jpg', mode: 'licht', title: 'Skyline, Amsterdam', author: '', license: '' },
+  { prayer: 'dhuhr',   url: 'backgrounds/licht/05-amsterdam-gracht.jpg', mode: 'licht', title: 'Gracht, Amsterdam', author: '', license: '' },
+  { prayer: 'asr',     url: 'backgrounds/licht/01-leiden-hooglandse-kerk.jpg', mode: 'licht', title: 'Hooglandse Kerk, Leiden', author: '', license: '' },
+  { prayer: 'maghrib', url: 'backgrounds/licht/03-amsterdam-grachtenpanden-zonsondergang.jpg', mode: 'donker', title: 'Grachtenpanden, Amsterdam', author: '', license: '' },
+  { prayer: 'isha',    url: 'backgrounds/donker/02-leiden-gracht-nacht.jpg', mode: 'donker', title: 'Gracht, Leiden', author: '', license: '' }
 ];
 
 function $(id) { return document.getElementById(id); }
@@ -153,18 +154,21 @@ function showBg(b) {
   img.onerror = function () { console.warn('[achtergrond] laden mislukt:', b.url); };
   img.src = b.url;
 }
+function prayerNow(now) {
+  var order = ['isha', 'maghrib', 'asr', 'dhuhr', 'fajr'];
+  for (var i = 0; i < order.length; i++) if (now >= times[order[i]]) return order[i];
+  return 'isha'; // na middernacht, voor Fajr
+}
 function nextBg() {
-  var mode = darkNow(new Date()) ? 'donker' : 'licht', set = BGS.filter(function (b) { return b.mode === mode; });
-  if (!set.length) set = BGS;
-  bgMode = mode; bgIdx[mode] = (bgIdx[mode] + 1) % set.length; showBg(set[bgIdx[mode]]);
+  var p = prayerNow(new Date()), b = BGS.filter(function (x) { return x.prayer === p; })[0] || BGS[0];
+  bgMode = p; showBg(b);
 }
 // Test: alle foto's 8 s per stuk tonen, daarna terug naar normaal.
 function runBgTest() {
   if (bgTest) return; bgTest = true; var i = 0;
   (function step() { if (i >= BGS.length) { bgTest = false; nextBg(); return; } showBg(BGS[i++]); setTimeout(step, 8000); })();
 }
-setInterval(function () { if (!bgTest) nextBg(); }, 60 * 60 * 1000);                 // elk uur een volgende
-setInterval(function () { var m = darkNow(new Date()) ? 'donker' : 'licht'; if (bgMode && m !== bgMode && !bgTest) nextBg(); }, 30 * 1000); // direct bij Maghrib/Fajr
+setInterval(function () { if (!bgTest && prayerNow(new Date()) !== bgMode) nextBg(); }, 30 * 1000); // wissel bij elk gebed
 
 // ---------- Adhaan (schermvullend, tik = stoppen, stopt zelf na einde) ----------
 var ad = $('adhan'), audio = null, adhanTimer = null, played = {};
